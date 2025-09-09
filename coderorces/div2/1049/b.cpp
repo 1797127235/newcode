@@ -1,0 +1,37 @@
+/*
+    面向答案进行构造
+    好难啊!!!!!
+*/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define fi first
+#define se second
+#define pb push_back
+#define endl '\n' 
+typedef pair<int, int> PII;
+typedef long long ll;
+#define rep(bg,ed, step) for (int i = bg; i <= ed; i += step)
+#define per(bg,ed, step) for (int j = bg; j >= ed; j -= step)
+const int INF = 1e18;
+const int N = 1e5 + 10;
+const int mod=1e9+7;
+void solve() {
+    int x;
+    cin >> x;
+    int ans = pow(10,9) -1 -x;
+    cout << ans << endl;
+}
+
+signed main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    cin >> t;
+    while (t--) solve();
+    return 0;
+}
