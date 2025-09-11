@@ -2,8 +2,6 @@
     面向答案进行构造
     好难啊!!!!!
 */
-
-
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
