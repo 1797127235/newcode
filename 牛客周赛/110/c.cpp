@@ -1,0 +1,116 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define fi first
+#define se second
+#define pb push_back
+#define endl '\n' 
+typedef pair<int, int> PII;
+typedef long long ll;
+#define rep(bg,ed, step) for (int i = bg; i <= ed; i += step)
+#define per(bg,ed, step) for (int j = bg; j >= ed; j -= step)
+const int INF = 1e18;
+const int N = 1e5 + 10;
+const int mod=1e9+7;
+
+// Python-like print
+template<typename... Args>
+void print(Args... args) {
+    ((cout << args << " "), ...);
+    cout << endl;
+}
+
+void solve(){
+    int n;
+    cin>>n;
+    vi a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    int mx = -1;
+    int mxpos = -1;
+    for(int i = 0; i < n; i++)
+    {
+        if(a[i] > mx)
+        {
+            mx = a[i];
+        }
+    }
+
+    if(mx == 0)
+    {
+        print(-1);
+        return ;
+    }
+    if (mx == 1) 
+    {
+        bool f= false;               
+        for (int i = 1; i < n; ++i)
+        {
+            if (a[i] > 0 && a[i-1] > 0)
+            { 
+                f = true;
+                break; 
+            }
+        }
+        cout << (f ? 1 : -1) << '\n';
+        return;
+    }
+
+    vector<int> mxli;
+    for(int i = 0; i < n; i++)
+    {
+        if(a[i] == mx)
+        {
+            mxli.push_back(i);
+        }
+    }
+
+    int ans = 0;
+
+    for(auto& mxpos : mxli)
+    {
+        int l = mxpos;
+        int r= mxpos;
+
+        if(l - 1 >=0)
+        {
+            if(a[l-1] > 0)
+            {
+                ans = max(ans,mx);
+            }
+            else
+            {
+                ans = max(ans,mx - 1);
+            }
+        }
+
+        if(r + 1 < n)
+        {
+            if(a[r+1] > 0)
+            {
+                ans = max(ans,mx);
+            }
+            else
+            {
+                ans = max(ans,mx - 1);
+            }
+        }
+    }
+
+    print(ans);
+
+
+
+
+}
+
+signed main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int t = 1;
+    cin >> t;
+    while (t--) solve();
+    return 0;
+}

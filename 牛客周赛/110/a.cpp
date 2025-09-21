@@ -18,19 +18,34 @@ const int mod=1e9+7;
 // Python-like print
 template<typename... Args>
 void print(Args... args) {
-    ((std::cout << args << " "), ...);
-    std::cout << std::endl;
+    ((cout << args << " "), ...);
+    cout << endl;
 }
 
 void solve() {
-    print("Hello, World!");
+    int n;
+    cin >> n;
+    if(n == 1)
+    {
+        print("NO");
+        return ;
+    }
+    if(n %2 == 0 || n % 3 ==0)
+    {
+        print("YES");
+        return ;
+    }
+
+    print("YES");
+
+
 }
 
 signed main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    //cin >> t;
     while (t--) solve();
     return 0;
 }

@@ -18,12 +18,40 @@ const int mod=1e9+7;
 // Python-like print
 template<typename... Args>
 void print(Args... args) {
-    ((std::cout << args << " "), ...);
-    std::cout << std::endl;
+    ((cout << args << " "), ...);
+    cout << endl;
 }
 
 void solve() {
-    print("Hello, World!");
+    int n;
+    cin >> n;
+    vi a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    sort(a.begin(), a.end());
+    vi t(n);
+    int l = 0, r = n - 1;
+    int i = 0;
+    while(l <= r)
+    {
+        t[l] = a[i];
+        i += 1;
+        l++;
+        if(i >= n) break;
+
+        t[r] = a[i];
+        i += 1;
+        r--;
+    }
+    int ans = 0;
+    for(int i = 1;i < n ;i++)
+    {
+        ans = ans + t[i]+ t[i-1];
+    }
+    print(ans);
+
+
+
+
 }
 
 signed main() {
