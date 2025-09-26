@@ -23,19 +23,24 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
-
-    
+    int n;
+    cin >> n;
+    int sum(0);
+    int x{0};
+    for(int i = 0; i < n; i++) {
+        int a;
+        cin >> a;
+        sum+=a;
+        x^=a;
+    }
+    print(sum-x);
 }
 
 signed main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    //cin >> t;
     while (t--) solve();
     return 0;
 }

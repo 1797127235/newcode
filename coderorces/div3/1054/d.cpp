@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define fi first
@@ -22,13 +21,31 @@ void print(Args... args) {
     cout << endl;
 }
 
-void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
+ll cost(const vector<int>& pos) {
+    int m = (int)pos.size();
+    if (m <= 1) return 0;
+    vector<ll> arr(m);
+    for (int i = 0; i < m; ++i) arr[i] = (ll)pos[i] - i; 
+    nth_element(arr.begin(), arr.begin() + m/2, arr.end());
+    ll med = arr[m/2];
+    ll res = 0;
+    for (ll x : arr) res += llabs(x - med);
+    return res;
+}
 
-    
+void solve() {
+    int n;
+     cin >> n;
+    string s;
+     cin >> s;
+    vector<int> posa, posb;
+    posa.reserve(n);
+     posb.reserve(n);
+    for (int i = 0; i < n; ++i)
+        (s[i] == 'a' ? posa : posb).pb(i);
+
+    ll ans = min(cost(posa), cost(posb));
+    cout << ans << '\n';
 }
 
 signed main() {

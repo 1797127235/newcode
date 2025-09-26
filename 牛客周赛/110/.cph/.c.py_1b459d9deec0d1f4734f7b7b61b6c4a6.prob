@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"c:\\Users\\17971\\Desktop\\newcode\\牛客周赛\\110\\c.py","tests":[{"id":1758463071654,"input":"2\n5\n1 2 3 4 5\n4\n0 0 0 0","output":"5\n-1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\17971\\Desktop\\newcode\\牛客周赛\\110\\c.py","group":"local","local":true}

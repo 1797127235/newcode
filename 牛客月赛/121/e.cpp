@@ -23,11 +23,13 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
-
+    int n;
+    cin >> n;
+    vi a(n);
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    //合并成本 (x^y)<<1
     
 }
 

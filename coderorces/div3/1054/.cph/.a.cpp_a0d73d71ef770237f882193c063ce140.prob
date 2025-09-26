@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"c:\\Users\\17971\\Desktop\\newcode\\coderorces\\div3\\1054\\a.cpp","tests":[{"id":1758811013346,"input":"3\n3\n-1 0 1\n4\n-1 -1 0 1\n5\n-1 -1 -1 0 0\n","output":"3\n1\n4\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\17971\\Desktop\\newcode\\coderorces\\div3\\1054\\a.cpp","group":"local","local":true}

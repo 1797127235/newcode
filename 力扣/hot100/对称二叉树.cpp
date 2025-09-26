@@ -23,11 +23,6 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
-
     
 }
 

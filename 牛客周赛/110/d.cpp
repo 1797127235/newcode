@@ -67,6 +67,7 @@ void solve() {
     }
 
     mid = tmid;
+    
     //删除最小的
     if(n % 2)
     {

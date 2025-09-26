@@ -12,7 +12,7 @@ typedef long long ll;
 #define rep(bg,ed, step) for (int i = bg; i <= ed; i += step)
 #define per(bg,ed, step) for (int j = bg; j >= ed; j -= step)
 const int INF = 1e18;
-const int N = 1e5 + 10;
+const int N = 2e5 + 10;
 const int mod=1e9+7;
 
 // Python-like print
@@ -22,13 +22,31 @@ void print(Args... args) {
     cout << endl;
 }
 
-void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
+vi pos(N,0);
 
-    
+void solve() {
+    pos.assign(N,0);
+    int n,k;
+    cin >> n >> k;
+    vi a(n);
+    for(auto &x : a)
+    {
+        cin >> x;
+        pos[x]++;
+    }
+    // 0 - k-1 必须出现
+    // k 不能出现
+    int ans = 0;
+    for(int i = 0; i < k; i++)
+    {
+        if(pos[i] == 0)
+        {
+            if(pos[k]) pos[k] -- ;
+            ans ++;
+        }
+    }
+    if(pos[k]) ans+=pos[k];
+    cout << ans << endl;
 }
 
 signed main() {

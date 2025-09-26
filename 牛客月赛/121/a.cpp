@@ -23,19 +23,28 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
-
-    
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    map<char,int> mp;
+    string target = "Kato_Shoko";
+    for(auto& c: s) mp[c]++;
+    for(auto& c: target) {
+        if(mp[c] == 0) {
+            print("NO");
+            return;
+        }
+    }
+    int ans = s.size() - target.size();
+    print("YES",ans);
 }
 
 signed main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    //cin >> t;
     while (t--) solve();
     return 0;
 }

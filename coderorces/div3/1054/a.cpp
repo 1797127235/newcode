@@ -23,12 +23,23 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
+    int n;
+    cin >> n;
+    vi a(n);
+    for(auto &x : a) cin >> x;
+    sort(a.begin(), a.end());
+    int ans = 0;
 
-    
+    int cnt0 = 0;
+    int cnt1 = 0;
+    for(auto &x : a)
+    {
+        if(x == 0) cnt0++;
+        else if(x == -1) cnt1++;
+    }
+    if(cnt1 % 2 == 0) ans =cnt0;
+    else ans = cnt0 + 2;
+    print(ans);
 }
 
 signed main() {

@@ -23,12 +23,18 @@ void print(Args... args) {
 }
 
 void solve() {
-    string x;
-    cin >> x;
-    int n = x.size();
-    vvi dp(n+1, vi(9, 0));
-
-    
+    int n;
+    cin >> n;
+    vi a(n);
+    for(auto &x : a) cin >> x;
+    sort(a.begin(), a.end());
+    //最大差值最小，二分
+    int ans = -INF;
+    for(int i = 0 ; i < n; i+=2)
+    {
+        ans = max(ans, a[i+1]-a[i]);
+    }
+    print(ans);
 }
 
 signed main() {
