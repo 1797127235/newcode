@@ -23,7 +23,7 @@ void print(Args... args) {
 }
 
 void solve() {
-    print("Hello, World!");
+    
 }
 
 signed main() {
