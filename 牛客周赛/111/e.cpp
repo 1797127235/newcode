@@ -24,45 +24,55 @@ void print(Args... args) {
 
 void solve() {
     int n,k;
-    cin >> n >>k;
-    // 构造 n - k 个环
-    if(k >= n)
+    cin >> n >> k;
+    int mn = 3*n - 1;
+    int mx = (n*n+3*n) / 2;
+    if(k < mn || k > mx)
     {
-        cout << -1 <<endl;
+        cout << -1 << endl;
+        return ;
+    }
+    vi ans;
+    vi vis(n + 1,0);
+    vis[n] = 1;
+    vis[n-1] = 1;
+    ans.pb(n);
+    k -= mn;
+
+    vi t;
+    for(int i = n -2; i >=1; i--)
+    {
+        if(k >= i)
+        {
+            k-=i;
+            t.pb(i);
+            vis[i] = 1;
+        }
+    }
+    if(k)
+    {
+        cout << -1 << endl;
         return ;
     }
 
-    int cur = n;
-    vector<int> t;
-    for(int i = 1; i <= n-k-1;i++)
+    for(int i = 1; i <=n;i++)
     {
-        t.push_back(2);
-        cur-=2;
-        if(cur <= 1)
-        {
-            cout << -1 << endl;
-            return ;
-        }
+        if(!vis[i]) ans.pb(i);
     }
-    t.pb(cur);
+    
+    if(n - 1)
+    ans.pb(n-1);
 
-    cur = 1;
-    vector<int> ans;
-    for(auto &x:t)
+    for(auto& x : t)
     {
-        int j = cur + 1;
-        for(;j - cur + 1 <=x;j++)
-        {
-            ans.pb(j);
-        }
-        ans.pb(cur);
-        cur = j;
+        ans.pb(x);
     }
 
     for(auto &x : ans)
     {
-        cout << x << " ";
+        cout << x << ' ';
     }
+
 
 }
 

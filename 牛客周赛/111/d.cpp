@@ -22,32 +22,63 @@ void print(Args... args) {
     cout << '\n';
 }
 
+//11倍数的性质
 void solve() {
     int n;
     cin >> n;
-    vector<string> a(n);
-    for(int i = 0; i < n; i++)
-        cin >> a[i];
+    vi cnt(11);
+    vector<PII> a(n);
     int ans = 0;
-    for(int i = 0; i <n; i++)
+    for(int i = 0; i < n; i++)
     {
-        for(int j = 0; j < n; j++)
+        string s;
+        cin >> s;
+        reverse(s.begin(),s.end());
+        int cur = 0;
+        for(int j = 0; j < s.size(); j++)
         {
-            if(i==j) continue;
-            int t = stoll(a[i] + a[j]);
-            if(t % 11 ==0)
+            if(j%2==0)
             {
-                ans ++;
-                cout << a[i] << ' ' << a[j] <<  endl;
+                cur += (s[j]-'0');
+            }
+            else
+            {
+                cur -= (s[j]-'0');
             }
         }
+        cur = (cur % 11 + 11) % 11;
+        if(s.size()%2==0)
+        {
+            ans = ans + cnt[(11-cur)%11];
+        }
+        else
+        {
+            ans = ans + cnt[cur];
+        }
+
+        cnt[cur] ++;
+        a[i] = {cur,s.size()%2};
     }
+
+    cnt.assign(11,0);
+
+    for(int j = n - 1; j >= 0; j--)
+    {
+        int cur = a[j].fi;
+        int op = a[j].se;
+        if(op == 0)
+        {
+            ans = ans + cnt[(11-cur)%11];
+        }
+        else
+        {
+            ans = ans + cnt[cur];
+        }
+        cnt[cur]++;
+    }
+
     cout << ans << endl;
 
-
-
-
-    
 }
 
 signed main() {

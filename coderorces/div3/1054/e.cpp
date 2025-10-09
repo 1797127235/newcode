@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define fi first
@@ -24,53 +23,42 @@ void print(Args... args) {
 
 void solve() {
     int n,k;
-    cin >> n >>k;
-    // 构造 n - k 个环
-    if(k >= n)
+    cin >> n >> k;
+    vi a(n);
+    for(int i = 0; i < n; i ++) cin >> a[i];
+    vi c(n+1,0);
+    for(auto &x : a) c[x]++;
+    vi pc(n+1,-1);
+    vi nc(n+1,0);
+    while(k--)
     {
-        cout << -1 <<endl;
-        return ;
-    }
-
-    int cur = n;
-    vector<int> t;
-    for(int i = 1; i <= n-k-1;i++)
-    {
-        t.push_back(2);
-        cur-=2;
-        if(cur <= 1)
+        int w = 0;
+        while(c[w]) w++;
+        nc.assign(n+1,0);
+        for(int i = 0; i <= n; i++)
         {
-            cout << -1 << endl;
-            return ;
+            if(i < w && c[i] == 1) nc[i]+=c[i];
+            else nc[w] =c[i];
         }
+        if(pc == nc) break;
+        pc = c;
+        c = nc;
     }
-    t.pb(cur);
+    auto res = c;
+    if(k%2==0) res = nc;
+    else res = c;
 
-    cur = 1;
-    vector<int> ans;
-    for(auto &x:t)
-    {
-        int j = cur + 1;
-        for(;j - cur + 1 <=x;j++)
-        {
-            ans.pb(j);
-        }
-        ans.pb(cur);
-        cur = j;
-    }
-
-    for(auto &x : ans)
-    {
-        cout << x << " ";
-    }
+    ll ans = 0;
+    for(int i = 0; i <= n; i++) ans += (ll)i*res[i];
+    cout << ans << endl;
 
 }
 
-signed main() {
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     int t = 1;
-    //cin >> t;
+    cin >> t;
     while (t--) solve();
     return 0;
 }

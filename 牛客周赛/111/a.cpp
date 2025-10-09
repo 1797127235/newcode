@@ -16,11 +16,6 @@ const int N = 1e5 + 10;
 const int mod = 1e9 + 7;
 
 // Python-like print
-template<typename... Args>
-void print(Args... args) {
-    ((std::cout << args << " " ), ...);
-    std::cout << std::endl;
-}
 
 void solve() {
     int x,y,z;
