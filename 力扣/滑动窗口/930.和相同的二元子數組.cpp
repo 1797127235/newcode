@@ -3,6 +3,12 @@ using namespace std;
 //统计“和 ≤ goal 的子数组个数” 减去 “和 ≤ goal-1 的子数组个数
 //差值就是“和 = goal 的子数组个数”
 
+//固定右端點
+//所有以right結尾且和<=goal的子數組，他們的左端可以從left1到right
+//所有以right結尾且和<=goal-1的子數組，他們的左端可以從left2到right
+//left2>=left1
+//兩者的可選左端個數相減,(left2 - left1)，就是和 = goal的子數組個數
+//https://leetcode.cn/problems/binary-subarrays-with-sum/description/
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
