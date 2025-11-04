@@ -5,7 +5,7 @@ using namespace std;
     贪心
     对于一段连续相同颜色的气球，只保留时间最大的，其他的都删除
 */
-class Solution {
+class Solution1 {
 public:
     int minCost(string colors, vector<int>& neededTime) {
         int n = colors.size();
@@ -38,7 +38,7 @@ public:
 */
 
 
-class Solution {
+class Solution2 {
 public:
     int minCost(string colors, vector<int>& neededTime) {
         int n = (int)colors.size();
@@ -67,11 +67,7 @@ public:
     f(i, prev)：从下标 i 开始到末尾，且上一个被留下的颜色是 prev 时，达到合法最终序列的最小删除代价。
     当前状态 (i, prev)，根据输入颜色 cur，有两种转移到新的状态 (i+1, prev) 或 (i+1, cur)
 */
-
-#include <bits/stdc++.h>
-using namespace std;
-
-class Solution {
+class Solution3 {
 public:
     int minCost(string colors, vector<int>& neededTime) {
         int n = colors.size();
