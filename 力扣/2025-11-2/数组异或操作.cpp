@@ -3,7 +3,7 @@
 using namespace std;
 
 //模拟
-class Solution {
+class Solution1 {
 public:
     int xorOperation(int n, int start) {
         int ans = 0;
@@ -39,7 +39,7 @@ public:
 */
 
 
-class Solution {
+class Solution2 {
     int xor_n(int n) {
         switch (n % 4) {
             case 0: return n;
