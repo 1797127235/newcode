@@ -1,13 +1,29 @@
-import sys
-input = sys.stdin.readline
-res= []
-def main():
-    print(1)
-
-if __name__ == '__main__':
-    T = 1
-    #T=int(input())  # 如果有多组数据，取消注释此行
-    for _ in range(T):
-        main()
+class Solution:
+    def countCompleteComponents(self, n: int, edges: List[List[int]]) -> int:
+        g = [[] for _ in range(n)]
+        for u,v in edges:
+            g[u].append(v)
+            g[v].append(u)
 
 
+        vis = [False] * n
+        v,e = 0, 0
+        ans = 0
+        def dfs(u):
+            nonlocal v,e
+            vis[u] = True
+            v += 1
+            e += len(g[u])
+
+            for to in g[u]:
+                if not vis[to]:
+                    dfs(to)
+
+        for i in range(n):
+            if not vis[i]:
+                v,e = 0,0
+                dfs(i)
+                if e == v * (v - 1):
+                    ans += 1
+
+        return ans
