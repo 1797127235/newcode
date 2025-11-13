@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>实验四：购物车</title>
+  <style>
+    :root { --gap: 12px; --border:#eaeaea; --muted:#666; --accent:#e53935; --radius:10px; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:#fafafa; color:#222; line-height:1.5; margin:0; }
+    .wrap { max-width: 860px; margin: 24px auto 80px; padding: 0 16px; }
+    h1 { font-size: 22px; font-weight: 600; }
+    ul.cart { list-style: none; padding: 0; margin: 16px 0 0; }
+    .cart > li { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; }
+    .ctrl, .total { display:flex; align-items:center; justify-content:space-between; }
+    .total { font-weight: 600; font-size: 18px; }
+    .empty { text-align: center; color: var(--muted); background: #fff; }
+    .item { display:flex; align-items: center; gap: var(--gap); justify-content: space-between; }
+    .item .left { display:flex; align-items:center; gap: var(--gap); flex: 1 1 auto; }
+    .item img { width: 80px; height: 110px; object-fit: cover; border-radius: 6px; }
+    .meta { display:flex; flex-direction: column; gap: 6px; }
+    .title { font-weight: 600; }
+    .price { color: var(--accent); font-weight: 600; }
+    .qtybox { display:flex; align-items:center; gap: 8px; }
+    .qtybox button { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background:#fff; cursor:pointer; }
+    .qtybox button:disabled { cursor:not-allowed; opacity: .5; }
+    .qty { min-width: 24px; text-align: center; }
+    .right { display:flex; align-items:center; gap: 16px; }
+    .del { border: 1px solid var(--border); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+    .summary { color: var(--muted); font-size:12px; }
+    label { user-select: none; }
+  </style>
+</head>
+<body>
+  <div id="app" class="wrap">
+    <h1>实验四 · 购物车</h1>
+    <ul class="cart">
+      <!-- 全选/全不选（独立一行） -->
+      <li class="ctrl">
+        <label>
+          <input type="checkbox" v-model="isAllChecked" @change="handleAllChange">
+          全选/全不选
+        </label>
+        <span class="summary">已选 {{ checkList.length }} / {{ datalist.length }}</span>
+      </li>
+
+      <!-- 清空后的空态提示（显示在全选行下方） -->
+      <li class="empty" v-if="datalist.length === 0">购物车空空如也</li>
+
+      <!-- 商品行（v-for 遍历生成） -->
+      <li class="item" v-for="(item, index) in datalist" :key="item.id">
+        <div class="left">
+          <input type="checkbox" v-model="checkList" :value="item.id" @change="handleItemChange">
+          <img :src="item.poster" :alt="item.title">
+          <div class="meta">
+             <div class="title">{{ item.title }}</div>
+             <div class="price">价格：￥{{ item.price }}</div>
+             <div class="summary">限购：{{ item.limit }} 件</div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="qtybox" aria-label="数量">
+            <button @click="dec(item)" :disabled="item.number <= 1">–</button>
+            <div class="qty">{{ item.number }}</div>
+            <button @click="inc(item)" :disabled="item.number >= item.limit">+</button>
+          </div>
+          <button class="del" @click="handleDel(index, item.id)">删除</button>
+        </div>
+      </li>
+
+      <!-- 总金额（独立一行） -->
+      <li class="total">总金额：￥{{ sum() }}</li>
+    </ul>
+  </div>
+
+  <!-- Vue 2（与实验提示一致的指令写法） -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        // 来自实验给定的数据集
+        datalist: [
+          { id: 1, title: "商品1", price: 10, number: 1, poster: "https://p0.meituan.net/movie/dc2fed6001e809e4553f90cc6fad9a59245170.jpg@1l_1e_1c_128w_180h", limit: 5 },
+          { id: 2, title: "商品2", price: 20, number: 2, poster: "https://p0.meituan.net/moviemachine/3084e88f63eef2c6a0df576153a3fad0327782.jpg@1l_1e_1c_128w_180h", limit: 6 },
+          { id: 3, title: "商品3", price: 30, number: 3, poster: "https://p0.meituan.net/movie/897b8364755949226995144bfc2261ee4493381.jpg@1l_1e_1c_128w_180h", limit: 7 }
+        ],
+        checkList: [],        // 保存被勾选的商品 id
+        isAllChecked: false   // 全选/全不选
+      },
+      methods: {
+        // 数量减（不能小于 1）
+        dec(item) {
+          if (item.number > 1) item.number--;
+        },
+        // 数量加（不能超过 limit）
+        inc(item) {
+          if (item.number < item.limit) item.number++;
+        },
+        // 删除记录：删除行 + 同步勾选状态 + 全选联动
+        handleDel(index, id) {
+          this.datalist.splice(index, 1);
+          const pos = this.checkList.indexOf(id);
+          if (pos > -1) this.checkList.splice(pos, 1);
+          this.isAllChecked = (this.checkList.length === this.datalist.length) && this.datalist.length > 0;
+        },
+        // 全选/全不选
+        handleAllChange() {
+          if (this.isAllChecked) {
+            this.checkList = this.datalist.map(it => it.id);
+          } else {
+            this.checkList = [];
+          }
+        },
+        // 单个复选框变化：联动全选的勾选状态
+        handleItemChange() {
+          this.isAllChecked = (this.checkList.length === this.datalist.length) && this.datalist.length > 0;
+        },
+        // 计算总金额：仅累计被勾选的行
+        sum() {
+          return this.datalist.reduce((total, it) => {
+            return total + (this.checkList.includes(it.id) ? it.price * it.number : 0);
+          }, 0);
+        }
+      }
+    })
+  </script>
+</body>
+</html>
