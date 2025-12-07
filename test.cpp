@@ -1,87 +1,54 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<algorithm>
+#include<list>
+#include<unordered_map>
 using namespace std;
 
-class UnionFind {
-public:
-    UnionFind(int n) {
-        p.resize(n);
-        size.resize(n, 1);
-        for (int i = 0; i < n; ++i) p[i] = i;
-    }
-
-    int find(int x) {
-        if (p[x] != x) p[x] = find(p[x]);
-        return p[x];
-    }
-
-    void unite(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
-        if (rootX != rootY) {
-            if (size[rootX] < size[rootY]) swap(rootX, rootY);
-            p[rootY] = rootX;
-            size[rootX] += size[rootY];
-        }
-    }
-
-    int getSize(int x) {
-        return size[find(x)]; // 返回 x 所在集合的大小
-    }
-
+class LRUCache{
 private:
-    vector<int> p;
-    vector<int> size;
-};
+    int _capacity;
+    list<pair<int,int>> cache_list; // 双向链表存储缓存数据
+    unordered_map<int, list<pair<int,int>>::iterator> cache_map; // 哈希表
 
-class Solution {
 public:
-    vector<int> processQueries(int c, vector<vector<int>>& connections, vector<vector<int>>& queries) {
-        UnionFind uf(c + 1);
-        vector<uint8_t> online(c + 1, 1);
-        for(auto &e : connections)
-        {
-            uf.unite(e[0],e[1]);
-        }
-        vector<set<int>> st(c + 1);
+    LRUCache(int capacity):_capacity(capacity) {}
+    int get(int key)
+    {
+        if(cache_map.find(key) == cache_map.end())
+            return -1; 
 
-        for(int i = 1;i <= c;i++)
-        {
-            int root = uf.find(i);
-            st[root].insert(i);
-        }
+        // 将该节点移到链表头部
+        auto it = cache_map[key];
+        //目标位置，原链表，移动的节点
+        cache_list.splice(cache_list.begin(), cache_list, it);
 
-        vector<int> ans;
-
-        for(auto &q : queries)
-        {
-            int op = q[0];
-            int x = q[1];
-            if(op == 1)
-            {
-                int root = uf.find(x);
-                if(st[root].size())
-                {
-                    if(st[root].count(x))
-                    {
-                        ans.push_back(x);
-                    }
-                    else
-                    {
-                        ans.push_back(*st[root].begin());
-                    }
-                }
-                else
-                {
-                    ans.push_back(-1);
-                }
-            }
-            else
-            {
-                online[x]=0;
-                int root = uf.find(x);
-                st[root].erase(x);
-            }
-        }
-        return ans;
+        return it->second;
     }
+
+    void put(int key, int value)
+    {
+        if(cache_map.find(key) != cache_map.end())
+        {
+            // 更新节点值并移到链表头部
+            auto it = cache_map[key];
+            it->second = value;
+            cache_list.splice(cache_list.begin(), cache_list, it);
+        }
+        else
+        {
+            if(cache_list.size() == _capacity)
+            {
+                // 删除链表尾部节点
+                auto last = cache_list.back();
+                cache_map.erase(last.first);
+                cache_list.pop_back();
+            }
+            // 插入新节点到链表头部
+            cache_list.emplace_front(key, value);
+            cache_map[key] = cache_list.begin();
+        }
+    }
+
+
+
 };
