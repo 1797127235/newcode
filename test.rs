@@ -1,48 +1,37 @@
-impl Solution {
-    pub fn max_k_divisible_components(n: i32, edges: Vec<Vec<i32>>, values: Vec<i32>, k: i32) -> i32 {
-        let n_usize = n as usize;
+use std::io::{self, Read};
 
-        let mut g = vec![vec![]; n_usize];
+fn main() {
+	let mut input = String::new();
+	io::stdin().read_to_string(&mut input).unwrap();
+	let mut it = input.split_whitespace();
 
-        for e in edges.iter()
-        {
-            let u = e[0] as usize;
-            let v = e[1] as usize;
-            g[u].push(v);
-            g[v].push(u);
-        }
+	let n: usize = match it.next() {
+		Some(v) => v.parse().unwrap(),
+		None => return,
+	};
 
-        let mut ans = 0;
+	let mut a: Vec<i32> = Vec::with_capacity(n);
+	for _ in 0..n {
+		if let Some(v) = it.next() {
+			a.push(v.parse().unwrap());
+		}
+	}
 
-        fn dfs(
-            u:usize,
-            fa:usize,
-            values:&Vec<i32>,
-            k:i64,
-            g:&Vec<Vec<usize>>,
-            ans:&mut i32,
-        ) -> i64
-        {
-            let mut sum:i64 = values[u].into();
+	let x: i32 = match it.next() {
+		Some(v) => v.parse().unwrap(),
+		None => {
+			println!("-1");
+			return;
+		}
+	};
 
-            for &v in g[u].iter()
-            {
-                if v == fa{
-                    continue;
-                }
+	let mut ans: i32 = -1;
+	for (i, &val) in a.iter().enumerate() {
+		if val == x {
+			ans = i as i32;
+			break;
+		}
+	}
 
-                sum += dfs(v,u,values,k,g,ans);
-            }
-            if sum % k == 0{
-                *ans+=1;
-                return 0;
-            }
-
-            return sum;
-        }
-
-        dfs(0, usize::MAX, &values, k as i64, &g, &mut ans);
-        
-        return ans
-    }
+	println!("{}", ans);
 }

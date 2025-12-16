@@ -1,35 +1,26 @@
-# Definition for singly-linked list.
-from typing import Optional
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+from typing import List
+import heapq
 class Solution:
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        cnt = 0
-        node = head
-        while node:
-            cnt += 1
-            node = node.next
+    def maxEvents(self, events: List[List[int]]) -> int:
+        n = len(events)
+        mx = max(e[1] for e in events)
+        g = [[] for _ in range(mx + 1)]
 
-        dummy = ListNode(next=head)
+        #按开始时间分组
+        for e in events:
+            g[e[0]].append(e[1])
 
-        p0 = dummy
-        
-        while cnt >= k:
-            cnt -= k
-            pre = None
-            cur = p0.next
-            for _ in range(k):
-                nxt = cur.next
-                cur.next = pre
-                pre = cur
-                cur = nxt
-            
-            nxt = p0.next   
-            p0.next.next = cur
-            p0.next = pre
-            p0 = nxt
+        ans = 0
+        h = []
+        for day in range(1,mx + 1):
+            while h and h[0] < day:
+                heapq.heappop(h)
 
-        return dummy.next
+
+            for end in g[day]:
+                heapq.heappush(h, end)
+
+            if h:
+                heapq.heappop(h)
+                ans += 1
+        return ans
