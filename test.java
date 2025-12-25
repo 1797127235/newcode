@@ -1,15 +1,20 @@
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int n = nums.length;
-        HashMap<Integer, Integer> mp = new HashMap<>();
-        for(int i = 0; i < n; i++) {
-            int x = target - nums[i];
-            if(mp.containsKey(x)) {
-                return new int[]{mp.get(x), i};
+    public long maximumHappinessSum(int[] happiness, int k) {
+        int n = happiness.length;
+        long ans = 0;
+        int cnt = 0;
+        Arrays.sort(happiness);
+        for(int i = n - 1; i >= 0; i--) {
+            if(happiness[i] <= cnt) {
+                break;
             }
-
-            mp.put(nums[i], i);
+            ans = ans + happiness[i] - cnt;
+            cnt++;
+            if(cnt == k) {
+                break;
+            }
         }
-        return new int[]{-1, -1};
+
+        return ans;
     }
 }
