@@ -1,26 +1,21 @@
-from typing import List
-import heapq
 class Solution:
-    def maxEvents(self, events: List[List[int]]) -> int:
-        n = len(events)
-        mx = max(e[1] for e in events)
-        g = [[] for _ in range(mx + 1)]
+    def decodeString(self, s: str) -> str:
+        if not s:
+            return s
 
-        #按开始时间分组
-        for e in events:
-            g[e[0]].append(e[1])
+        # s[0] 是字母
+        if s[0].isalpha():
+            # 分离出 s[0]，解码剩下的
+            return s[0] + self.decodeString(s[1:])
 
-        ans = 0
-        h = []
-        for day in range(1,mx + 1):
-            while h and h[0] < day:
-                heapq.heappop(h)
-
-
-            for end in g[day]:
-                heapq.heappush(h, end)
-
-            if h:
-                heapq.heappop(h)
-                ans += 1
-        return ans
+        # s[0] 是数字，后面至少有一对括号
+        i = s.find('[')  # 找左括号
+        # 找右括号，注意对于 [...[...]...] 这种情况，第一个右括号并不是我们要找的，第二个才是
+        balance = 1  # 左括号个数减去右括号个数
+        for j in count(i + 1):  # 从 i+1 开始向右遍历，找与 s[i] 匹配的右括号
+            if s[j] == '[':
+                balance += 1
+            elif s[j] == ']':
+                balance -= 1
+                if balance == 0:  # 左右括号个数相等，找到与 s[i] 匹配的右括号 s[j]
+                    return self.decodeString(s[i + 1: j]) * int(s[:i]) + self.decodeString(s[j + 1:])
